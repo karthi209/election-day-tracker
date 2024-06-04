@@ -1,35 +1,98 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const initialRows = Array.from({ length: 39 }, (_, i) => ({
+    id: i + 1,
+    constituency: `Constituency ${i + 1}`,
+    leadingCandidate: '',
+    leadingParty: '',
+    trailingCandidate: '',
+    trailingParty: '',
+    margin: '',
+    status: '',
+  }));
+
+  const [rows, setRows] = useState(initialRows);
+
+  const handleInputChange = (id, field, value) => {
+    const newRows = rows.map(row =>
+      row.id === id ? { ...row, [field]: value } : row
+    );
+    setRows(newRows);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <header className="App-header">
+        <h1>Election Trends Tracker</h1>
+      </header>
+      <main className="App-main">
+        <table>
+          <thead>
+            <tr>
+              <th>Constituency</th>
+              <th>Leading Candidate</th>
+              <th>Leading Party</th>
+              <th>Trailing Candidate</th>
+              <th>Trailing Party</th>
+              <th>Margin</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(row => (
+              <tr key={row.id}>
+                <td>{row.constituency}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.leadingCandidate}
+                    onChange={(e) => handleInputChange(row.id, 'leadingCandidate', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.leadingParty}
+                    onChange={(e) => handleInputChange(row.id, 'leadingParty', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.trailingCandidate}
+                    onChange={(e) => handleInputChange(row.id, 'trailingCandidate', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.trailingParty}
+                    onChange={(e) => handleInputChange(row.id, 'trailingParty', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.margin}
+                    onChange={(e) => handleInputChange(row.id, 'margin', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.status}
+                    onChange={(e) => handleInputChange(row.id, 'status', e.target.value)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
